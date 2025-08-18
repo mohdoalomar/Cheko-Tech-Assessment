@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sdaiaDB
+    environment:
+      POSTGRES_DB: sdaiaDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      TZ: Asia/Riyadh
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - ./db/db_dump.sql:/docker-entrypoint-initdb.d/db_dump.sql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sdaia-app
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sdaiaDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123
