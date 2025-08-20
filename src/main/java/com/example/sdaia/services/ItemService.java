@@ -2,88 +2,110 @@ package com.example.sdaia.services;
 
 import com.example.sdaia.entities.Item;
 import com.example.sdaia.entities.dto.ItemDTO;
+import com.example.sdaia.entities.dto.ItemPageResponseDTO;
 import com.example.sdaia.repositories.ItemRepository;
 import com.example.sdaia.util.ItemCategory;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class ItemService {
-    private final ItemRepository itemRepository;
+  private final ItemRepository itemRepository;
 
-    public List<ItemDTO> getAllItems(ItemCategory category,String sortBy, Boolean isAscending, Boolean bestSeller, String searchQuery) {
-        Sort sort = isAscending? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        return itemRepository.findAll(
-                        filterByCategoryAndBestSeller(category, bestSeller).and(searchFilter(searchQuery)),
-                        sort).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+  public ItemPageResponseDTO getAllItems(
+      ItemCategory category,
+      String sortBy,
+      Boolean isAscending,
+      Boolean bestSeller,
+      String searchQuery,
+      int pageSize,
+      int pageNumber) {
+    Specification<Item> specification =  filterByCategoryAndBestSeller(category, bestSeller).and(searchFilter(searchQuery));
+    Page<ItemDTO> items =
+        getItemsPage(sortBy, isAscending, pageSize, pageNumber, specification);
+    Map<ItemCategory, Long> counts = countItemsByCategory(specification);
+    return ItemPageResponseDTO.builder()
+        .items(items)
+        .counts(counts)
+        .build();
+      }
+
+
+  public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
+    Map<ItemCategory, ItemDTO> result = new HashMap<>();
+    for (ItemCategory category : ItemCategory.values())
+      result.put(
+          category, toDTO(itemRepository.findTheSecondHighestCaloryItemForACategory(category)));
+    return result;
+  }
+  public Page<ItemDTO> getItemsPage(
+          String sortBy,
+          Boolean isAscending,
+          int pageSize,
+          int pageNumber,
+          Specification<Item> specification) {
+    Sort sort = isAscending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+    Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+    return itemRepository
+            .findAll(
+                    specification,
+                    pageable)
+            .map(this::toDTO);
+
+  }
+  public Map<ItemCategory, Long> countItemsByCategory(Specification<Item> specification) {
+    Map<ItemCategory, Long> counts = new HashMap<>();
+    for (ItemCategory category : ItemCategory.values()) {
+      Specification<Item> categorySpec = (root, query, cb) ->
+              cb.equal(root.get("category"), category);
+      Specification<Item> combinedSpec = specification.and(categorySpec);
+      counts.put(category, itemRepository.count(combinedSpec));
+    }
+    return counts;
+  }
+  private static Specification<Item> filterByCategoryAndBestSeller(
+      ItemCategory category, Boolean isBestSeller) {
+    return (root, query, cb) ->
+        cb.and(
+            category != null ? cb.equal(root.get("category"), category) : cb.conjunction(),
+            isBestSeller != null
+                ? cb.equal(root.get("isBestSeller"), isBestSeller)
+                : cb.conjunction());
+  }
+
+  private static Specification<Item> searchFilter(String search) {
+    if (search == null || search.isBlank()) {
+      return (root, query, cb) -> cb.conjunction(); // no filtering
     }
 
-//    public List<ItemDTO> searchItems(String query) {
-//        return itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query)
-//                .stream()
-//                .map(this::toDTO)
-//                .collect(Collectors.toList());
-//    }
-//
-//    public List<ItemDTO> filterItemsByCategory(ItemCategory category) {
-//        return itemRepository.findByCategory(category)
-//                .stream()
-//                .map(this::toDTO)
-//                .collect(Collectors.toList());
-//    }
+    String pattern = "%" + search.trim().toLowerCase() + "%";
 
-    public Map<ItemCategory, Long> countItemsByCategory() {
-        Map<ItemCategory, Long> counts = new HashMap<>();
-        for (ItemCategory category : ItemCategory.values()) {
-            counts.put(category, itemRepository.countByCategory(category));
-        }
-        return counts;
-    }
+    return (root, query, cb) ->
+        cb.or(
+            cb.like(cb.lower(root.get("name")), pattern),
+            cb.like(cb.lower(root.get("description")), pattern));
+  }
 
-    public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
-        Map<ItemCategory, ItemDTO> result = new HashMap<>();
-        for (ItemCategory category : ItemCategory.values())
-            result.put(category, toDTO(itemRepository.findTheSecondHighestCaloryItemForACategory(category)));
-        return result;
-    }
-
-    private static Specification<Item> filterByCategoryAndBestSeller(ItemCategory category, Boolean isBestSeller) {
-        return (root, query, cb) -> cb.and(
-                category != null ? cb.equal(root.get("category"), category) : cb.conjunction(),
-                isBestSeller != null ? cb.equal(root.get("isBestSeller"), isBestSeller) : cb.conjunction()
-        );
-    }
-    private static Specification<Item> searchFilter (String search) {
-        if (search == null || search.isBlank()) {
-            return (root, query, cb) -> cb.conjunction(); // no filtering
-        }
-
-        String pattern = "%" + search.trim().toLowerCase() + "%";
-
-        return (root, query, cb) -> cb.or(
-                cb.like(cb.lower(root.get("name")), pattern),
-                cb.like(cb.lower(root.get("description")), pattern)
-        );
-    }
-    private ItemDTO toDTO(Item item) {
-        ItemDTO dto = new ItemDTO();
-        dto.setName(item.getName());
-        dto.setDescription(item.getDescription());
-        dto.setImageUrl(item.getImageUrl());
-        dto.setCategory(item.getCategory());
-        dto.setCalories(item.getCalories());
-        dto.setIsBestSeller(item.getIsBestSeller());
-        dto.setPrice(item.getPrice());
-        return dto;
-    }
+  private ItemDTO toDTO(Item item) {
+    ItemDTO dto = new ItemDTO();
+    dto.setName(item.getName());
+    dto.setDescription(item.getDescription());
+    dto.setImageUrl(item.getImageUrl());
+    dto.setCategory(item.getCategory());
+    dto.setCalories(item.getCalories());
+    dto.setIsBestSeller(item.getIsBestSeller());
+    dto.setPrice(item.getPrice());
+    return dto;
+  }
 }

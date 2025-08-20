@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: 123
       TZ: Asia/Riyadh
     ports:
-      - "5432:5432"
+      - "5431:5432"
 #    volumes:
 #      - ./db/db_dump.sql:/docker-entrypoint-initdb.d/db_dump.sql
 

@@ -15,10 +15,15 @@ public class Item {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @NotNull private String name;
   @NotNull private String description;
   @NotNull private String imageUrl;
-  @NotNull   @Enumerated(EnumType.STRING) private ItemCategory category;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private ItemCategory category;
+
   @NotNull private int calories;
   private Boolean isBestSeller;
   @NotNull private int price;
