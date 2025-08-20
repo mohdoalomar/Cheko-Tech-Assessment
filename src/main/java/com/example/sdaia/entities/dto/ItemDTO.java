@@ -10,6 +10,6 @@ public class ItemDTO {
   private String imageUrl;
   private ItemCategory category;
   private int calories;
-  private boolean isBestSeller;
+  private Boolean isBestSeller;
   private int price;
 }

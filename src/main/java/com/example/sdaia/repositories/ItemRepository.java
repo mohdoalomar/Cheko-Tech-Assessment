@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    List<Item> findAll(Specification<Item> specification, Specification<Item> search, Sort sort);
+    List<Item> findAll(Specification<Item> specification, Sort sort);
 
 //    List<Item> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 //

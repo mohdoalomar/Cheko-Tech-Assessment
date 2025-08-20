@@ -19,11 +19,10 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
 
-    public List<ItemDTO> getAllItems(ItemCategory category,String sortBy, boolean isAscending, boolean bestSeller, String searchQuery) {
+    public List<ItemDTO> getAllItems(ItemCategory category,String sortBy, Boolean isAscending, Boolean bestSeller, String searchQuery) {
         Sort sort = isAscending? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         return itemRepository.findAll(
-                        filterByCategoryAndBestSeller(category, bestSeller),
-                        searchFilter(searchQuery),
+                        filterByCategoryAndBestSeller(category, bestSeller).and(searchFilter(searchQuery)),
                         sort).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -83,7 +82,7 @@ public class ItemService {
         dto.setImageUrl(item.getImageUrl());
         dto.setCategory(item.getCategory());
         dto.setCalories(item.getCalories());
-        dto.setBestSeller(item.isBestSeller());
+        dto.setIsBestSeller(item.getIsBestSeller());
         dto.setPrice(item.getPrice());
         return dto;
     }

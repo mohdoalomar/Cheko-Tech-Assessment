@@ -18,8 +18,8 @@ public class Item {
   @NotNull private String name;
   @NotNull private String description;
   @NotNull private String imageUrl;
-  @NotNull private ItemCategory category;
+  @NotNull   @Enumerated(EnumType.STRING) private ItemCategory category;
   @NotNull private int calories;
-  private boolean isBestSeller = false;
+  private Boolean isBestSeller;
   @NotNull private int price;
 }
