@@ -20,6 +20,4 @@ public class Location {
   private double longitude;
   private String imageUrl;
   private String restaurantName;
-
-
 }
