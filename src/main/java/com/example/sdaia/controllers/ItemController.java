@@ -21,11 +21,11 @@ public class ItemController {
       @RequestParam(name = "search", required = false) String search,
       @RequestParam(name = "category", required = false) ItemCategory category,
       @RequestParam(name = "bestSeller", required = false) Boolean bestSeller,
-      @RequestParam(name = "sortBy", required = false, defaultValue = "price") String sortBy,
+      @RequestParam(name = "sortBy", required = false, defaultValue = "price") String sort,
       @RequestParam(name = "ascending", required = false, defaultValue = "true") boolean ascending,
       @RequestParam(name = "page_size", required = false, defaultValue = "9") int pageSize,
       @RequestParam(name = "page_number", required = false, defaultValue = "0") int pageNumber
          ) {
-    return itemService.getAllItems(category, sortBy, ascending, bestSeller, search, pageSize, pageNumber);
+    return itemService.getAllItems(category, sort, ascending, bestSeller, search, pageSize, pageNumber);
   }
 }
