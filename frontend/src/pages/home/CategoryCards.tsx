@@ -11,9 +11,10 @@ const categoryIcons: { [key in ItemCategory]: React.ReactNode } = {
 
 interface CategoryCardsProps {
     counts: CategoryCounts;
+    isDarkMode: boolean;
 }
 
-export default function CategoryCards({ counts }: CategoryCardsProps) {
+export default function CategoryCards({ counts, isDarkMode }: CategoryCardsProps) {
     // Return null if there are no counts to display, preventing an empty container
     if (!counts || Object.keys(counts).length === 0) {
         return null;
@@ -29,7 +30,7 @@ export default function CategoryCards({ counts }: CategoryCardsProps) {
                     // Use a non-interactive div for display
                     <div
                         key={cat}
-                        className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200"
+                        className={`flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium ${isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"}`}
                     >
                         {categoryIcons[cat]}
                         <span>{categoryName}</span>
@@ -38,7 +39,7 @@ export default function CategoryCards({ counts }: CategoryCardsProps) {
                 );
             })}
             {/* Orders card can also be a simple div */}
-            <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+            <div className={`flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium ${isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"}`}>
                 <Inbox size={20} />
                 <span>Orders</span>
                 <span className="font-semibold">3</span>

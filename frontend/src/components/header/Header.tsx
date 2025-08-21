@@ -23,6 +23,7 @@ const Header = ({ isDarkMode, setIsDarkMode, activeTab, setActiveTab }: HeaderPr
             </header>
 
             <SearchBar />
+            <div className="h-40"></div>
         </>
     );
 };

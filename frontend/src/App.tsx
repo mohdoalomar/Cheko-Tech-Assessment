@@ -9,11 +9,9 @@ export default function App() {
     return (
         <div className={` ${isDarkMode?  "bg-cheko-dark-background": "bg-gray-100" } min-h-screen font-sans `}>
             <Header setIsDarkMode={setIsDarkMode} setActiveTab={setActiveTab} isDarkMode={isDarkMode} activeTab={activeTab} />
-            <div className="mt-40">
-            <Home/>
-            </div>
+
+            <Home isDarkMode={isDarkMode}/>
+
         </div>
     )
 }
-
-
