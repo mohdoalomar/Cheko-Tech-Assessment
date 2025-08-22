@@ -1,12 +1,12 @@
 import type { ItemCategory, CategoryCounts } from '../types';
-import { Coffee, Soup, Wheat, UtensilsCrossed, Inbox } from 'lucide-react'; // Example icons
+import { Coffee, Soup, Wheat, Croissant, UtensilsCrossed } from 'lucide-react'; // Example icons
 
 const categoryIcons: { [key in ItemCategory]: React.ReactNode } = {
-    BREAKFAST: <Wheat size={20} />,
-    DRINK: <Coffee size={20} />,
-    SOUP: <Soup size={20} />,
-    SUSHI: <UtensilsCrossed size={20} />,
-    OTHER: <Wheat size={20} />,
+    BREAKFAST:<div className="bg-cheko-pink rounded-xl my-auto w-14 h-14 "> <Croissant size={30} className=" rotate-45  m-auto mt-3 text-black"/> </div>,
+    DRINK: <div className=" bg-cheko-light-blue rounded-xl my-auto w-14 h-14  "> <Coffee size={30} className="bg-cheko-light-blue  m-auto mt-3 text-black"/></div>,
+    SOUP: <div className="bg-cheko-light-mauve rounded-xl my-auto w-14 h-14  "> <Soup size={30} className="bg-cheko-light-mauve  m-auto mt-3  text-black"/></div>,
+    SUSHI: <div className="bg-cheko-lavender rounded-xl  my-auto w-14 h-14"> <UtensilsCrossed size={30} className="bg-cheko-lavender  m-auto mt-3 text-black" /> </div>,
+    OTHER: <div className="bg-cheko-teal rounded-xl  my-auto w-14 h-14"> <Wheat size={30} className="bg-cheko-teal  m-auto mt-3 text-black"/> </div>,
 };
 
 interface CategoryCardsProps {
@@ -15,22 +15,19 @@ interface CategoryCardsProps {
 }
 
 export default function CategoryCards({ counts, isDarkMode }: CategoryCardsProps) {
-    // Return null if there are no counts to display, preventing an empty container
-    if (!counts || Object.keys(counts).length === 0) {
-        return null;
-    }
 
     const categories = Object.keys(counts) as ItemCategory[];
 
     return (
-        <div className="mb-8 flex flex-wrap gap-3">
-            {categories.map((cat) => {
+        <div className="grid grid-cols-2  sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-8 mx-auto">
+            {categories.reverse().map((cat) => {
                 const categoryName = cat.charAt(0) + cat.slice(1).toLowerCase();
                 return (
-                    // Use a non-interactive div for display
                     <div
                         key={cat}
-                        className={`flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium ${isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"}`}
+                        className={`flex items-center justify-start max-w-64 space-x-2 rounded-lg px-4 py-2 text-sm font-medium shadow ${
+                            isDarkMode ? "bg-gray-700 text-gray-200" : "bg-white text-black"
+                        }`}
                     >
                         {categoryIcons[cat]}
                         <span>{categoryName}</span>
@@ -38,12 +35,6 @@ export default function CategoryCards({ counts, isDarkMode }: CategoryCardsProps
                     </div>
                 );
             })}
-            {/* Orders card can also be a simple div */}
-            <div className={`flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium ${isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"}`}>
-                <Inbox size={20} />
-                <span>Orders</span>
-                <span className="font-semibold">3</span>
-            </div>
         </div>
     );
 }

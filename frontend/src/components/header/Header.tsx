@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import headerImage from "/headerImage.png";
 import type { HeaderProps } from './types';
 
-const Header = ({ isDarkMode, setIsDarkMode, activeTab, setActiveTab }: HeaderProps) => {
+const Header = ({ isDarkMode, setIsDarkMode, activeTab, setActiveTab, setIsFilterOpen, setSearchTerm}: HeaderProps) => {
     return (
         <>
             <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
@@ -15,14 +15,14 @@ const Header = ({ isDarkMode, setIsDarkMode, activeTab, setActiveTab }: HeaderPr
                     alt="Abstract background"
                     className="absolute top-0 h-full w-full object-cover opacity-[7.5%] blur-lg"
                 />
-                <div className="container absolute top-0 left-52">
+                <div className="container absolute top-0 md:left-52 left-36 w-1/2">
                     <div className="flex items-center justify-between">
-                        <NavigationBar activeTab={activeTab} setActiveTab={setActiveTab} />
+                        <NavigationBar activeTab={activeTab} setActiveTab={setActiveTab} setSearchTerm={setSearchTerm} />
                     </div>
                 </div>
             </header>
 
-            <SearchBar />
+            <SearchBar isDarkMode={isDarkMode} setIsFilterOpen={setIsFilterOpen} setSearchTerm={setSearchTerm} />
             <div className="h-40"></div>
         </>
     );

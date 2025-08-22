@@ -5,4 +5,8 @@ export interface HeaderProps {
     setIsDarkMode: (isDark: boolean) => void;
     activeTab: HeaderTabs;
     setActiveTab: (tab: HeaderTabs) => void;
+    setIsFilterOpen: (isOpen: boolean) => void;
+    setSearchTerm: (searchTerm: string) => void
+    
+
 }

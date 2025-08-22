@@ -6,9 +6,7 @@ import com.example.sdaia.entities.dto.ItemPageResponseDTO;
 import com.example.sdaia.repositories.ItemRepository;
 import com.example.sdaia.util.ItemCategory;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,16 +28,12 @@ public class ItemService {
       String searchQuery,
       int pageSize,
       int pageNumber) {
-    Specification<Item> specification =  filterByCategoryAndBestSeller(category, bestSeller).and(searchFilter(searchQuery));
-    Page<ItemDTO> items =
-        getItemsPage(sortBy, isAscending, pageSize, pageNumber, specification);
+    Specification<Item> specification =
+        filterByCategoryAndBestSeller(category, bestSeller).and(searchFilter(searchQuery));
+    Page<ItemDTO> items = getItemsPage(sortBy, isAscending, pageSize, pageNumber, specification);
     Map<ItemCategory, Long> counts = countItemsByCategory(specification);
-    return ItemPageResponseDTO.builder()
-        .items(items)
-        .counts(counts)
-        .build();
-      }
-
+    return ItemPageResponseDTO.builder().items(items).counts(counts).build();
+  }
 
   public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
     Map<ItemCategory, ItemDTO> result = new HashMap<>();
@@ -48,32 +42,30 @@ public class ItemService {
           category, toDTO(itemRepository.findTheSecondHighestCaloryItemForACategory(category)));
     return result;
   }
+
   public Page<ItemDTO> getItemsPage(
-          String sortBy,
-          Boolean isAscending,
-          int pageSize,
-          int pageNumber,
-          Specification<Item> specification) {
+      String sortBy,
+      Boolean isAscending,
+      int pageSize,
+      int pageNumber,
+      Specification<Item> specification) {
     Sort sort = isAscending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
     Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-    return itemRepository
-            .findAll(
-                    specification,
-                    pageable)
-            .map(this::toDTO);
-
+    return itemRepository.findAll(specification, pageable).map(this::toDTO);
   }
+
   public Map<ItemCategory, Long> countItemsByCategory(Specification<Item> specification) {
     Map<ItemCategory, Long> counts = new HashMap<>();
     for (ItemCategory category : ItemCategory.values()) {
-      Specification<Item> categorySpec = (root, query, cb) ->
-              cb.equal(root.get("category"), category);
+      Specification<Item> categorySpec =
+          (root, query, cb) -> cb.equal(root.get("category"), category);
       Specification<Item> combinedSpec = specification.and(categorySpec);
       counts.put(category, itemRepository.count(combinedSpec));
     }
     return counts;
   }
+
   private static Specification<Item> filterByCategoryAndBestSeller(
       ItemCategory category, Boolean isBestSeller) {
     return (root, query, cb) ->
@@ -98,14 +90,15 @@ public class ItemService {
   }
 
   private ItemDTO toDTO(Item item) {
-    ItemDTO dto = new ItemDTO();
-    dto.setName(item.getName());
-    dto.setDescription(item.getDescription());
-    dto.setImageUrl(item.getImageUrl());
-    dto.setCategory(item.getCategory());
-    dto.setCalories(item.getCalories());
-    dto.setIsBestSeller(item.getIsBestSeller());
-    dto.setPrice(item.getPrice());
-    return dto;
+    return ItemDTO.builder()
+        .id(item.getId())
+        .name(item.getName())
+        .description(item.getDescription())
+        .imageUrl(item.getImageUrl())
+        .category(item.getCategory())
+        .calories(item.getCalories())
+        .isBestSeller(item.getIsBestSeller())
+        .price(item.getPrice())
+        .build();
   }
 }

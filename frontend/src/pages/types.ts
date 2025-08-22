@@ -29,3 +29,9 @@ export interface ApiResponse {
     items: ApiItemResponse;
     counts: CategoryCounts;
 }
+export interface Location {
+    latitude: number;
+    longitude: number;
+    imageUrl: string;
+    restaurantName: string;
+}

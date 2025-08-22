@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import type {Item, ApiResponse, CategoryCounts} from '../pages/types';
-
-export const useItems = () => {
+import type { Item, ApiResponse, CategoryCounts, ItemCategory } from '../pages/types';
+export type Filters = {
+    category: ItemCategory | null;
+    bestSeller: boolean | null;
+    sortBy: string;
+    sortAscending: boolean;
+};
+export const useItems = (searchTerm: string) => {
     const [items, setItems] = useState<Item[]>([]);
     const [page, setPage] = useState(0);
     const [hasNextPage, setHasNextPage] = useState(true);
@@ -9,12 +14,38 @@ export const useItems = () => {
     const [initialLoading, setInitialLoading] = useState(true);
     const [counts, setCounts] = useState<CategoryCounts>({});
 
-    const fetchItems = useCallback(async (currentPage: number) => {
+    const [filters, setFilters] = useState<Filters>({
+        category: null,
+        bestSeller: null,
+        sortBy: 'price',
+        sortAscending: true,
+    });
+
+    const fetchItems = useCallback(async (currentPage: number, currentFilters: Filters) => {
         setLoading(true);
         if (currentPage === 0) setInitialLoading(true);
 
         try {
-            const apiUrl = `http://localhost:8081/items?&page_number=${currentPage}&page_size=9`;
+            // Core parameters that always have a value
+            const params = new URLSearchParams({
+                page_number: String(currentPage),
+                page_size: '9',
+                sort_by: currentFilters.sortBy,
+                ascending: String(currentFilters.sortAscending),
+            });
+
+            // Conditionally append optional parameters only if they have a value
+            if (searchTerm) {
+                params.append('search', searchTerm);
+            }
+            if (currentFilters.category) {
+                params.append('category', currentFilters.category);
+            }
+            if (currentFilters.bestSeller !== null) {
+                params.append('best_seller', String(currentFilters.bestSeller));
+            }
+
+            const apiUrl = `http://localhost:8081/items?${params.toString()}`;
             const response = await fetch(apiUrl);
             if (!response.ok) throw new Error('Network response was not ok');
             const data: ApiResponse = await response.json();
@@ -32,22 +63,23 @@ export const useItems = () => {
             setLoading(false);
             setInitialLoading(false);
         }
-    }, []);
+    }, [searchTerm]);
 
+    // This effect now correctly re-runs when `search` changes (because `fetchItems` is recreated)
     useEffect(() => {
         setItems([]);
         setPage(0);
         setHasNextPage(true);
-        fetchItems(0);
-    }, [ fetchItems]);
+        fetchItems(0, filters);
+    }, [filters, fetchItems]);
 
     const loadMore = () => {
         if (!loading && hasNextPage) {
             const nextPage = page + 1;
             setPage(nextPage);
-            fetchItems(nextPage);
+            fetchItems(nextPage, filters);
         }
     };
 
-    return { items, loading, initialLoading, hasNextPage, loadMore, counts };
+    return { items, loading, initialLoading, hasNextPage, loadMore, counts, filters, setFilters };
 };

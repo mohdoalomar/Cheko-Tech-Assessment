@@ -1,17 +1,24 @@
-// src/pages/home/ItemCard.tsx
-
-// src/pages/home/ItemCard.tsx
-import type {Item} from '../types';
+import type { Item } from '../types';
 
 interface ItemCardProps {
     item: Item;
+    quantity: number;
+    onQuantityChange: (itemId: string | number, newQuantity: number) => void;
+    onCardClick: (item: Item) => void;
     isDarkMode: boolean;
 }
 
-export default function ItemCard({ item, isDarkMode }: ItemCardProps) {
-    const quantity = 0;
-    const onQuantityChange = (newQuantity: number) => console.log(`Quantity for ${item.name} changed to ${newQuantity}`);
-    const onCardClick = (clickedItem: Item) => console.log(`${clickedItem.name} card clicked`);
+export default function ItemCard({ item, quantity, onQuantityChange, onCardClick, isDarkMode }: ItemCardProps) {
+
+    const handleIncrease = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent modal from opening on button click
+        onQuantityChange(item.id, quantity + 1);
+    };
+
+    const handleDecrease = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent modal from opening on button click
+        onQuantityChange(item.id, quantity - 1);
+    };
 
     return (
         <div
@@ -19,12 +26,13 @@ export default function ItemCard({ item, isDarkMode }: ItemCardProps) {
             onClick={() => onCardClick(item)}
         >
             <div className="relative w-1/3">
-                <img src={item.imageUrl} alt={item.name} className="h-full w-full rounded-lg object-cover" />
                 {item.isBestSeller && (
-                    <span className="absolute bottom-2 left-2 rounded-full bg-teal-100 px-2 py-1 text-xs font-semibold text-teal-800">
+                    <span className="absolute bottom-2/5 -right-14 h-5 items-center flex justify-center w-20  rounded bg-[#D0EAE3] px-2 py-1 text-xs font-semibold text-[#599887]">
             Best Sale
           </span>
                 )}
+                <img src={item.imageUrl} alt={item.name} className="h-36 w-full rounded-lg object-cover" />
+
             </div>
             <div className="flex w-2/3 flex-col justify-between pl-4">
                 <div>
@@ -32,20 +40,20 @@ export default function ItemCard({ item, isDarkMode }: ItemCardProps) {
                     <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{item.calories} Cal</p>
                 </div>
                 <div className="mt-2 flex items-center justify-between">
-                    <p className="font-semibold text-pink-500">{item.price} SR</p>
+                    <p className="font-semibold text-cheko-pink">{item.price} SR</p>
                     <div className="flex items-center space-x-2">
                         <button
-                            onClick={(e) => { e.stopPropagation(); onQuantityChange(quantity - 1); }}
-                            className={`flex h-7 w-7 items-center justify-center rounded-lg ${isDarkMode ? "bg-pink-900/50 text-pink-300" : "bg-pink-100 text-pink-600"}`}
+                            onClick={handleDecrease}
+                            className={`flex h-9 w-9 items-center justify-center text-2xl font-bold rounded-lg ${isDarkMode ? "border-cheko-pink border  text-cheko-pink" : "bg-pink-100 text-cheko-black"}`}
                         >
-                            -
+                            <span className="mb-1">-</span>
                         </button>
                         <span className={`font-bold ${isDarkMode ? "text-gray-200" : "text-gray-800"}`}>{quantity}</span>
                         <button
-                            onClick={(e) => { e.stopPropagation(); onQuantityChange(quantity + 1); }}
-                            className={`flex h-7 w-7 items-center justify-center rounded-lg ${isDarkMode ? "bg-pink-900/50 text-pink-300" : "bg-pink-100 text-pink-600"}`}
+                            onClick={handleIncrease}
+                            className={`flex h-9 w-9 items-center justify-center text-2xl font-bold rounded-lg ${isDarkMode ? "border-cheko-pink border text-cheko-pink" : "bg-pink-100 text-cheko-black"}`}
                         >
-                            +
+                            <span className="mb-1">+</span>
                         </button>
                     </div>
                 </div>
