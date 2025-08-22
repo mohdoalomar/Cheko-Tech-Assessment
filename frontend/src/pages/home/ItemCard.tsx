@@ -22,7 +22,7 @@ export default function ItemCard({ item, quantity, onQuantityChange, onCardClick
 
     return (
         <div
-            className={`flex cursor-pointer overflow-hidden rounded-2xl p-4 shadow-md transition-transform hover:scale-105 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
+            className={`flex cursor-pointer overflow-hidden rounded-2xl p-4 shadow-md transition-transform hover:scale-105 ${isDarkMode ? "bg-cheko-card-gray" : "bg-white"}`}
             onClick={() => onCardClick(item)}
         >
             <div className="relative w-1/3">

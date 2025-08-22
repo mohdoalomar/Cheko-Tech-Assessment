@@ -25,8 +25,8 @@ export default function CategoryCards({ counts, isDarkMode }: CategoryCardsProps
                 return (
                     <div
                         key={cat}
-                        className={`flex items-center justify-start max-w-64 space-x-2 rounded-lg px-4 py-2 text-sm font-medium shadow ${
-                            isDarkMode ? "bg-gray-700 text-gray-200" : "bg-white text-black"
+                        className={`flex items-center justify-start max-w-64 space-x-2 rounded-lg px-2.5 py-2 text-sm font-medium shadow ${
+                            isDarkMode ? "bg-cheko-card-gray text-gray-200" : "bg-white text-black"
                         }`}
                     >
                         {categoryIcons[cat]}

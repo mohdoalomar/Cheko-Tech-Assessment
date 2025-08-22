@@ -15,8 +15,8 @@ export default function CardModal({ isOpen, onClose, item, quantity, onQuantityC
 
     return (
         <div className="fixed inset-0 bg-black/45 flex items-center justify-center z-50 p-10">
-            <div className={`rounded-3xl shadow-xl w-full max-w-lg px-7 relative animate-fade-in-up ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}>
-                <button onClick={onClose} className={`absolute top-4 right-4 rounded-full p-2 transition-colors ${isDarkMode ? "bg-gray-700 hover:bg-gray-600 text-gray-300" : "bg-gray-200 hover:bg-gray-300 text-gray-600"}`}><X size={20} /></button>
+            <div className={`rounded-3xl shadow-xl w-full max-w-lg px-7 relative animate-fade-in-up ${isDarkMode ? "bg-cheko-card-gray text-white" : "bg-white text-gray-900"}`}>
+                <button onClick={onClose} className={`absolute top-4 right-4 rounded-full p-2 transition-colors ${isDarkMode ? "bg-cheko-search-gray hover:bg-gray-600 text-gray-300" : "bg-gray-200 hover:bg-gray-300 text-gray-600"}`}><X size={20} /></button>
                 <div className="p-6">
                     <div className="flex items-center space-x-3 mb-2">
                         <h2 className="text-2xl font-bold">{item.name}</h2>
