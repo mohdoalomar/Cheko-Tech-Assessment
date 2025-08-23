@@ -11,12 +11,12 @@ interface ItemCardProps {
 export default function ItemCard({ item, quantity, onQuantityChange, onCardClick, isDarkMode }: ItemCardProps) {
 
     const handleIncrease = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent modal from opening on button click
+        e.stopPropagation();
         onQuantityChange(item.id, quantity + 1);
     };
 
     const handleDecrease = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent modal from opening on button click
+        e.stopPropagation();
         onQuantityChange(item.id, quantity - 1);
     };
 

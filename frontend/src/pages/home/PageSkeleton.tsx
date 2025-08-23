@@ -11,9 +11,6 @@ export default function PageSkeleton({ isDarkMode }: PageSkeletonProps) {
             ))}
         </div>
 
-        {/* Title Skeleton */}
-        <div className={`mb-6 h-8 w-48 rounded ${isDarkMode ? "bg-gray-700" : "bg-gray-200"}`}/>
-
         {/* Item Grid Skeleton */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({length: 9}).map((_, i) => (

@@ -2,7 +2,6 @@ import { useLocations } from '../../hooks/useLocations';
 import MapComponent from './MapComponent';
 import MapFilter from '../../components/header/MapFilter.tsx';
 
-// This would come from your Header component via a shared state (e.g., Zustand, Context, or lifted state in App.tsx)
 interface MapPageProps {
     searchTerm: string;
     isFilterOpen: boolean;

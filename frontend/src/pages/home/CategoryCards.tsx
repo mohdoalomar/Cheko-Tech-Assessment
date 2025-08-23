@@ -20,7 +20,7 @@ export default function CategoryCards({ counts, isDarkMode }: CategoryCardsProps
 
     return (
         <div className="grid grid-cols-2  sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-8 mx-auto">
-            {categories.reverse().map((cat) => {
+            {categories.map((cat) => {
                 const categoryName = cat.charAt(0) + cat.slice(1).toLowerCase();
                 return (
                     <div

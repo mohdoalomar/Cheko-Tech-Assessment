@@ -6,6 +6,7 @@ import com.example.sdaia.entities.dto.ItemPageResponseDTO;
 import com.example.sdaia.repositories.ItemRepository;
 import com.example.sdaia.util.ItemCategory;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class ItemService {
     return ItemPageResponseDTO.builder().items(items).counts(counts).build();
   }
 
-  public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
+public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
     Map<ItemCategory, ItemDTO> result = new HashMap<>();
     for (ItemCategory category : ItemCategory.values())
       result.put(
@@ -56,7 +57,7 @@ public class ItemService {
   }
 
   public Map<ItemCategory, Long> countItemsByCategory(Specification<Item> specification) {
-    Map<ItemCategory, Long> counts = new HashMap<>();
+    Map<ItemCategory, Long> counts = new LinkedHashMap<>();
     for (ItemCategory category : ItemCategory.values()) {
       Specification<Item> categorySpec =
           (root, query, cb) -> cb.equal(root.get("category"), category);

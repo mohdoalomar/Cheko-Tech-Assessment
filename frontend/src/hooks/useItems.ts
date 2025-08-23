@@ -26,7 +26,6 @@ export const useItems = (searchTerm: string) => {
         if (currentPage === 0) setInitialLoading(true);
 
         try {
-            // Core parameters that always have a value
             const params = new URLSearchParams({
                 page_number: String(currentPage),
                 page_size: '9',
@@ -34,7 +33,6 @@ export const useItems = (searchTerm: string) => {
                 ascending: String(currentFilters.sortAscending),
             });
 
-            // Conditionally append optional parameters only if they have a value
             if (searchTerm) {
                 params.append('search', searchTerm);
             }
@@ -65,7 +63,6 @@ export const useItems = (searchTerm: string) => {
         }
     }, [searchTerm]);
 
-    // This effect now correctly re-runs when `search` changes (because `fetchItems` is recreated)
     useEffect(() => {
         setItems([]);
         setPage(0);

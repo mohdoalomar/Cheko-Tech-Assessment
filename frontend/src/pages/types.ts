@@ -1,5 +1,3 @@
-// src/pages/types.ts
-
 export type ItemCategory = "BREAKFAST" | "DRINK" | "SOUP" | "SUSHI" | "OTHER";
 
 export interface Item {

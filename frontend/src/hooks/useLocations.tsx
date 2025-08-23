@@ -9,7 +9,6 @@ export const useLocations = (searchTerm: string) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Try to get user location first, fallback to Riyadh if denied
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -58,10 +57,9 @@ export const useLocations = (searchTerm: string) => {
                 setLoading(false);
             }
         },
-        [userLocation, maxDistance, searchTerm] // ✅ only here
+        [userLocation, maxDistance, searchTerm]
     );
 
-    // Refetch when relevant filters change
     useEffect(() => {
         fetchLocations();
     }, [fetchLocations]);

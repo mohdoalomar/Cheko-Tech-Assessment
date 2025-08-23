@@ -5,6 +5,8 @@ import com.example.sdaia.entities.dto.ItemPageResponseDTO;
 import com.example.sdaia.services.ItemService;
 import com.example.sdaia.util.ItemCategory;
 import java.util.List;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +29,9 @@ public class ItemController {
       @RequestParam(name = "page_number", required = false, defaultValue = "0") int pageNumber
          ) {
     return itemService.getAllItems(category, sort, ascending, bestSeller, search, pageSize, pageNumber);
+  }
+  @GetMapping("/item/second_highest_calorie")
+  public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
+    return itemService.getSecondHighestCalorieItemPerCategory();
   }
 }
