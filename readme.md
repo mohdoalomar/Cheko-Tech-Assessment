@@ -1,4 +1,4 @@
-# Sdaia Tech Assessment 
+# Cheko Tech Assessment 
 
 This project is a Spring Boot application connected to a PostgreSQL database, exposed by a React frontend with VITE, and containerized using Docker Compose.
 
