@@ -7,7 +7,7 @@ const categoryIcons: { [key in ItemCategory]: React.ReactNode } = {
       {" "}
       <Croissant
         size={30}
-        className=" rotate-45  m-auto mt-3 text-black"
+        className=" rotate-45  m-auto mt-4 text-black"
       />{" "}
     </div>
   ),
