@@ -16,7 +16,9 @@ public class LocationService {
   public List<LocationDTO> getAllLocations(String name) {
     Specification<Location> spec =
         (root, query, cb) ->
-            name !=null ? cb.like(cb.lower(root.get("restaurantName")), "%" + name.toLowerCase() + "%") : cb.conjunction();
+            name != null
+                ? cb.like(cb.lower(root.get("restaurantName")), "%" + name.toLowerCase() + "%")
+                : cb.conjunction();
     return locationRepository.findAll(spec).stream().map(this::toDTO).toList();
   }
 
@@ -24,18 +26,21 @@ public class LocationService {
       double lat, double lon, double maxDistance, String name) {
     Specification<Location> spec =
         (root, query, cb) ->
-                name !=null ? cb.like(cb.lower(root.get("restaurantName")), "%" + name.toLowerCase() + "%") : cb.conjunction();
+            name != null
+                ? cb.like(cb.lower(root.get("restaurantName")), "%" + name.toLowerCase() + "%")
+                : cb.conjunction();
     return locationRepository.findAll(spec).stream()
         .filter(
             location ->
                 calculateDistance(lat, lon, location.getLatitude(), location.getLongitude())
                     < maxDistance)
-        .map(this::toDTO).toList();
+        .map(this::toDTO)
+        .toList();
   }
 
   private LocationDTO toDTO(Location location) {
     return LocationDTO.builder()
-            .id(location.getId())
+        .id(location.getId())
         .latitude(location.getLatitude())
         .longitude(location.getLongitude())
         .imageUrl(location.getImageUrl())
@@ -49,9 +54,12 @@ public class LocationService {
     double latDistance = Math.toRadians(lat2 - lat1);
     double lonDistance = Math.toRadians(lon2 - lon1);
 
-    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+    double a =
+        Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+            + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2)
+                * Math.sin(lonDistance / 2);
 
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;

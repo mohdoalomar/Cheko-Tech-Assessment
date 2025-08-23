@@ -16,8 +16,8 @@ public class LocationController {
   @GetMapping("/locations")
   public List<LocationDTO> getLocations(
       @RequestParam(name = "restaurant_name", required = false) String name,
-      @RequestParam (required = false) Double lat,
-      @RequestParam (required = false) Double lon,
+      @RequestParam(required = false) Double lat,
+      @RequestParam(required = false) Double lon,
       @RequestParam(name = "max_distance", required = false) Double maxDistance) {
     return lat == null || lon == null || maxDistance == null
         ? locationService.getAllLocations(name)

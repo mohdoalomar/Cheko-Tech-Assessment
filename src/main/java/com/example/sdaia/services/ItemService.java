@@ -36,7 +36,7 @@ public class ItemService {
     return ItemPageResponseDTO.builder().items(items).counts(counts).build();
   }
 
-public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
+  public Map<ItemCategory, ItemDTO> getSecondHighestCalorieItemPerCategory() {
     Map<ItemCategory, ItemDTO> result = new HashMap<>();
     for (ItemCategory category : ItemCategory.values())
       result.put(
