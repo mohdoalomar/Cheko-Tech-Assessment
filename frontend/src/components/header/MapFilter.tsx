@@ -6,6 +6,7 @@ interface FilterModalProps {
   onClose: () => void;
   currentDistance: number;
   onApplyFilter: (distance: number) => void;
+  isDarkMode: boolean;
 }
 
 export default function MapFilter({
@@ -13,6 +14,7 @@ export default function MapFilter({
   onClose,
   currentDistance,
   onApplyFilter,
+  isDarkMode,
 }: FilterModalProps) {
   const [distance, setDistance] = useState(currentDistance);
   if (!isOpen) return null;
@@ -23,13 +25,13 @@ export default function MapFilter({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/20 bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-sm p-6">
+    <div className={`fixed inset-0 ${isDarkMode ? 'bg-black/50' : 'bg-black/20'} bg-opacity-50 flex items-center justify-center z-50 p-4`}>
+      <div className={`${isDarkMode ? 'bg-cheko-card-gray text-white' : 'bg-white'} rounded-lg shadow-xl w-full max-w-sm p-6`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Filter by Distance</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-200"
+            className={`${isDarkMode ? 'text-white hover:bg-gray-700' : 'hover:bg-gray-200'} p-1 rounded-full`}
           >
             <X size={20} />
           </button>
@@ -37,7 +39,7 @@ export default function MapFilter({
         <div className="mb-6">
           <label
             htmlFor="distance"
-            className="block text-sm font-medium text-gray-700"
+            className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
           >
             Max Distance: <span className="font-bold">{distance} km</span>
           </label>
@@ -48,7 +50,7 @@ export default function MapFilter({
             max="25"
             value={distance}
             onChange={(e) => setDistance(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            className={`w-full h-2 ${isDarkMode ? 'bg-gray-600' : 'bg-gray-200'} rounded-lg appearance-none cursor-pointer`}
           />
         </div>
         <button

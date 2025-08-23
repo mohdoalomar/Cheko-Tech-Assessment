@@ -54,6 +54,7 @@ export default function Home({
         currentFilters={filters}
         onApplyFilters={setFilters}
         categoryCounts={counts}
+        isDarkMode={isDarkMode}
       />
     </div>
   );

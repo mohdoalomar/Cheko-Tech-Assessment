@@ -68,6 +68,7 @@ export default function MapPage({
         onClose={() => setIsFilterOpen(false)}
         currentDistance={maxDistance}
         onApplyFilter={setMaxDistance}
+        isDarkMode={isDarkMode}
       />
     </div>
   );

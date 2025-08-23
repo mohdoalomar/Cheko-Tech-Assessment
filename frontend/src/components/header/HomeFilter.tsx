@@ -23,6 +23,7 @@ interface FilterModalProps {
   currentFilters: Filters;
   onApplyFilters: (newFilters: Filters) => void;
   categoryCounts: CategoryCounts;
+  isDarkMode: boolean;
 }
 
 export default function FilterModal({
@@ -31,6 +32,7 @@ export default function FilterModal({
   currentFilters,
   onApplyFilters,
   categoryCounts,
+  isDarkMode,
 }: FilterModalProps) {
   // Manages the user's selections before they are applied
   const [tempFilters, setTempFilters] = useState<Filters>(currentFilters);
@@ -60,19 +62,19 @@ export default function FilterModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex justify-end z-50">
+    <div className={`fixed inset-0 ${isDarkMode ? 'bg-black/50' : 'bg-black/30'} flex justify-end z-50`}>
       <div
         onClick={onClose}
         className="absolute inset-0"
         aria-hidden="true"
       ></div>
-      <div className="relative bg-white w-full max-w-sm h-full flex flex-col p-6 shadow-xl">
+      <div className={`relative ${isDarkMode ? 'bg-cheko-card-gray text-white' : 'bg-white'} w-full max-w-sm h-full flex flex-col p-6 shadow-xl`}>
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Filters</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-200"
+            className={`${isDarkMode ? 'text-white hover:bg-gray-700' : 'hover:bg-gray-200'} p-1 rounded-full`}
           >
             <X size={24} />
           </button>
@@ -184,13 +186,13 @@ export default function FilterModal({
           <div className="flex items-center gap-3">
             <button
               onClick={handleClear}
-              className="w-1/2 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-black transition-colors hover:bg-gray-100"
+              className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-black hover:bg-gray-100'} w-1/2 rounded-lg border px-4 py-2.5 font-semibold transition-colors`}
             >
               Clear All
             </button>
             <button
               onClick={handleApply}
-              className="w-1/2 rounded-lg bg-black px-4 py-2.5 font-semibold text-white transition-colors hover:bg-gray-800"
+              className={`$ bg-cheko-pink w-1/2 rounded-lg px-4 py-2.5 font-semibold text-black transition-colors hover:bg-cheko-pink/75`}
             >
               Apply Filters
             </button>
