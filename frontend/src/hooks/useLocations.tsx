@@ -25,7 +25,7 @@ export const useLocations = (searchTerm: string) => {
       },
       {
         enableHighAccuracy: false,
-        timeout: 2000,
+        timeout: 5000,
         maximumAge: 5000,
       }
     );

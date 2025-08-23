@@ -12,8 +12,8 @@ This project is a Spring Boot application connected to a PostgreSQL database, ex
 
 1. add .env file with the following environment variables:
 
-DB_USER=
-DB_PASSWORD=
+POSTGRES_PASSWORD=
+POSTGRES_USER=
 SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/sdaiaDB
 
 
@@ -23,9 +23,9 @@ docker-compose up --build
 
 3. Access the application at:
 
-FE: http://localhost:80
-BE: http://localhost:8081
-Api documentation (Swagger): http://localhost:8081/swagger-ui/index.html
+FE: http://localhost:80  
+BE: http://localhost:8081  
+Api documentation (Swagger): http://localhost:8081/swagger-ui/index.html  
 
 ## Notes
 The PostgreSQL container automatically imports the SQL dump file from dump.sql on first run.

@@ -24,7 +24,7 @@ export default function SearchBar({
     >
       {/* Search Input */}
       <div className="flex w-1/2 flex-grow items-center my-auto">
-        <Search className="mx-3 text-cheko-black" size={20} />
+        <Search className={`mx-3 ${isDarkMode? "text-white" : "text-cheko-black"} `} size={20} />
         <input
           type="text"
           placeholder="Search"
