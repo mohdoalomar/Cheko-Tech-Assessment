@@ -61,6 +61,7 @@ export default function MapPage({
         locations={locations}
         initialCenter={userLocation}
         isDarkMode={isDarkMode}
+        userLocation={userLocation}
       />
       <MapFilter
         isOpen={isFilterOpen}

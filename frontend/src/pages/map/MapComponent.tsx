@@ -9,12 +9,14 @@ interface MapComponentProps {
   locations: any[];
   initialCenter: { lat: number; lon: number };
   isDarkMode: boolean;
+  userLocation: { lat: number; lon: number } | null;
 }
 
 export default function MapComponent({
   locations,
   initialCenter,
   isDarkMode,
+  userLocation,
 }: MapComponentProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
@@ -29,7 +31,8 @@ export default function MapComponent({
   )}'><path d='M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z'/><circle cx='12' cy='10' r='3' fill='white'/></svg>")`;
   const selectedMarkerSVG = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='${encodeURIComponent(
     selectedMarkerColor
-  )}'><path d='M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z'/><circle cx='12' cy='10' r='3' fill='white'/></svg>")`;
+  )}'><path d='M21 10c0 7-9 13-9 13S3 17 3 10a9 0 0 1 18 0z'/><circle cx='12' cy='10' r='3' fill='white'/></svg>")`;
+
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -49,6 +52,25 @@ export default function MapComponent({
       setMap(null);
     };
   }, []);
+
+  useEffect(() => {
+    if (!map || !userLocation) return;
+
+    const userMarkerElement = document.createElement('div');
+    userMarkerElement.className = 'user-location-marker';
+    userMarkerElement.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23ADD8E6'><circle cx='12' cy='12' r='8'/></svg>")`;
+    userMarkerElement.style.width = '24px';
+    userMarkerElement.style.height = '24px';
+    userMarkerElement.style.backgroundSize = 'contain';
+    userMarkerElement.style.backgroundRepeat = 'no-repeat';
+    userMarkerElement.style.animation = 'pulse 3s infinite';
+
+    new Marker(userMarkerElement)
+      .setLngLat([userLocation.lon, userLocation.lat])
+      .setPopup(new Popup({ offset: 25 }).setText('Your Location'))
+      .addTo(map);
+
+  }, [map, userLocation]);
 
   const drawMarkers = () => {
     if (!map) return;
