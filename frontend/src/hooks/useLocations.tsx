@@ -24,7 +24,7 @@ export const useLocations = (searchTerm: string) => {
         setUserLocation(RIYADH_COORDS);
       },
       {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 5000,
       }
