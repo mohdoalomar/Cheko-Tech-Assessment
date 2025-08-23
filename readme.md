@@ -14,7 +14,7 @@ This project is a Spring Boot application connected to a PostgreSQL database, ex
 
 DB_USER=
 DB_PASSWORD=
-SPRING_DATASOURCE_URL=jdbc:postgresql://DB_USER:5432/sdaiaDB
+SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/sdaiaDB
 
 
 2. Start the containers:
