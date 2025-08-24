@@ -18,7 +18,7 @@ export const useItems = (searchTerm: string) => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [counts, setCounts] = useState<CategoryCounts>({});
-
+  const [error, setError] = useState("");
   const [filters, setFilters] = useState<Filters>({
     category: null,
     bestSeller: null,
@@ -65,6 +65,8 @@ export const useItems = (searchTerm: string) => {
         }
       } catch (error) {
         console.error("Failed to fetch items:", error);
+        setError("Failed to fetch items");
+        setHasNextPage(false);
       } finally {
         setLoading(false);
         setInitialLoading(false);
@@ -97,5 +99,6 @@ export const useItems = (searchTerm: string) => {
     counts,
     filters,
     setFilters,
+    error
   };
 };

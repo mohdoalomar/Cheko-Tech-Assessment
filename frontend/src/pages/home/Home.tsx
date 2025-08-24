@@ -28,6 +28,7 @@ export default function Home({
     counts,
     filters,
     setFilters,
+    error
   } = useItems(searchTerm);
 
   if (initialLoading) {
@@ -36,6 +37,11 @@ export default function Home({
         <PageSkeleton isDarkMode={isDarkMode} />
       </div>
     );
+  }
+  if(error){
+    return <div className="flex items-center justify-center h-screen">
+     <span className="text-red-700 mx-auto my-auto">{error}</span> 
+    </div>
   }
 
   return (
