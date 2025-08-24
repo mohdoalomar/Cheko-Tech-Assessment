@@ -29,6 +29,7 @@ export default function SearchBar({
           type="text"
           placeholder="Search"
           onChange={handleSearch}
+          onKeyDown={(event)=> event.key=="Enter"? setSearchTerm(search) : null}
           className={`w-full bg-transparent ${
             isDarkMode
               ? "placeholder:text-white"
